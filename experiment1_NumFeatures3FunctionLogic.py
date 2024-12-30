@@ -99,4 +99,6 @@ plt.legend()
 plt.title('Test Accuracy After 100 Epochs in 2 Layer NN')
 plt.xlabel('Num FEatures')
 plt.ylabel('Test Accuracy')
+# Save the plot
+plt.savefig(f'experiment1_accuracy_{start}_{final_num_features}.png', format='png')  # Save as PNG
 plt.show()
