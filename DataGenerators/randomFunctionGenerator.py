@@ -10,30 +10,48 @@ import pandas as pd
 
 # Logical operators dictionary
 logical_operators = ['and','and not','or','or not','^']
+function_encode = ''
 
 # Generate a random logical function
 def generate_random_function(n):
     conditions = []
+    encodes = []
     for i in range(1,n+1):  # Random number of conditions
         var1 = f"x{i}"
         if random.random() < 0.5:
             # Compare variable to a threshold
             threshold = round(random.uniform(0.1, 0.5), 2)
-            condition = f"{var1} < {threshold}"
+            if random.uniform(0,1) <= 0.5:
+                compare = "<"
+                enc_compare = "L"
+            else:
+                compare = ">"
+                enc_compare = "G"
+            condition = f"{var1} {compare} {threshold}"
+            str_threshold = str(threshold).replace('.', '')
+            enc = f"{var1}{enc_compare}{str_threshold}"
         else:
             # Compare variable to another variable
-            var2 = f"x{random.randint(1, n)}"
+            i2 = random.randint(1,n)
+            var2 = f"x{i2}"
             condition = f"{var1} < {var2}"
+            enc = f"{var1}L{var2}"
         conditions.append(condition)
+        encodes.append(enc)
 
     # Combine conditions with random logical operators
     function = conditions[0]
-    for condition in conditions[1:]:
+    encoded_function= encodes[0]
+    for i in range(1,len(conditions)):
+        condition = conditions[i]
+        encoded = encodes[i]
         #op = random.choice(list(logical_operators.keys()))
         op = random.choice(logical_operators)
+        op_idx = logical_operators.index(op) #I know there's a better way to have done this, but performance doesn't matter
         function = f"({function}) {op} ({condition})"
+        encoded_function = f"{encoded_function}{op_idx}{encoded}-"
 
-    return function
+    return function, encoded_function
 
 # Evaluate the logical function
 def evaluate_function(func, inputs):
@@ -66,7 +84,7 @@ def main():
             hits = 0
             while hits < 0.4*samples or hits > 0.6*samples:
                 # Generate a random logical function
-                random_function = generate_random_function(n)
+                random_function, encoded_fn = generate_random_function(n)
                 print(f"Generated Logical Function: {random_function}")
                 
                 # Create dataset
@@ -80,7 +98,7 @@ def main():
                 print(hits)
         else:
             # Generate a random logical function
-            random_function = generate_random_function(n)
+            random_function, encoded_fn = generate_random_function(n)
             print(f"Generated Logical Function: {random_function}")
             
             # Create dataset
@@ -92,9 +110,10 @@ def main():
             df = pd.DataFrame(dataset, columns=columns)
     
         # Save to CSV
-        output_file = f"logical_fn_dataset_{n}_{samples}_lopsided{lopsided}.csv"
+        output_file = f"logi_fn_dataset_{n}_{samples}_lop{lopsided}_{encoded_fn}.csv"
         df.to_csv(output_file, index=False)
         print(f"Dataset saved to {output_file}")
+        print(encoded_fn)
     except Exception as e:
         print(f"An error occurred: {e}")
 
