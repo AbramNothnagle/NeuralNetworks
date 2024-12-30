@@ -92,7 +92,7 @@ def main():
             df = pd.DataFrame(dataset, columns=columns)
     
         # Save to CSV
-        output_file = "random_logical_function_dataset.csv"
+        output_file = f"logical_fn_dataset_{n}_{samples}_lopsided{lopsided}.csv"
         df.to_csv(output_file, index=False)
         print(f"Dataset saved to {output_file}")
     except Exception as e:
