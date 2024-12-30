@@ -2,7 +2,7 @@
 """
 Created on Fri Dec 27 20:42:57 2024
 
-@author: abram
+@author: Abram Nothnagle
 """
 
 import torch
