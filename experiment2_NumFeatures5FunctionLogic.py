@@ -18,11 +18,11 @@ from sklearn.metrics import accuracy_score
 # Startup Parameters go here:
 num_variables = 5
 epochs = 100
-final_num_features = 10
+final_num_features = 30
 start = 1
-
+fn_hash = '4274b9a2'
 # Load the dataset
-data = pd.read_csv('DataGenerators\\logical_fn_dataset_5_10000_lopsidedn.csv')
+data = pd.read_csv('DataGenerators\\logi_fn_dataset_5_10000_lopn_4274b9a2.csv')
 
 # Extract features and labels
 labels = []
@@ -101,5 +101,5 @@ plt.title('Test Accuracy After 100 Epochs in 2 Layer NN')
 plt.xlabel('Num FEatures')
 plt.ylabel('Test Accuracy')
 # Save the plot
-plt.savefig(f'experiment1_accuracy_{start}_{final_num_features}.png', format='png')  # Save as PNG
+plt.savefig(f'experiment1_accuracy_{start}_{final_num_features}_{fn_hash}.png', format='png')  # Save as PNG
 plt.show()
