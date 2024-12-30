@@ -7,6 +7,7 @@ Created on Sun Dec 29 23:13:04 2024
 
 import random
 import pandas as pd
+import hashlib
 
 # Logical operators dictionary
 logical_operators = ['and','and not','or','or not','^']
@@ -71,6 +72,14 @@ def generate_dataset(n, samples, func):
         data.append(inputs + [output])
     return data
 
+# Encode function using sha256
+def encode_function(logical_function):
+    # Use SHA256 for hashing
+    hash_object = hashlib.sha256(logical_function.encode())
+    # Convert hash to a shorter representation (e.g., first 8 characters of the hex digest)
+    encoded = hash_object.hexdigest()[:8]
+    return encoded
+
 # Main script
 def main():
     try:
@@ -108,11 +117,21 @@ def main():
             # Store data in dataframe
             columns = [f"x{i+1}" for i in range(n)] + ["y"]
             df = pd.DataFrame(dataset, columns=columns)
-    
+        
+        encoded_hash = encode_function(random_function)
         # Save to CSV
-        output_file = f"logi_fn_dataset_{n}_{samples}_lop{lopsided}_{encoded_fn}.csv"
+        # Save to CSV with hash
+        output_file = f"logi_fn_dataset_{n}_{samples}_lop{lopsided}_{encoded_hash}.csv"
+        # Save to CSV with encoded name
+        #output_file = f"logi_fn_dataset_{n}_{samples}_lop{lopsided}_{encoded_fn}.csv"
         df.to_csv(output_file, index=False)
         print(f"Dataset saved to {output_file}")
+        
+        # Save the hash to the hash file
+        hashes = pd.read_csv('randomFunctionGenerator_Hashes.csv')
+        new_hash = pd.DataFrame({'Hash':[encoded_hash], 'Function':[random_function]})
+        hashes = pd.concat([hashes, new_hash], ignore_index = True)
+        hashes.to_csv('randomFunctionGenerator_Hashes.csv', index=False)
         print(encoded_fn)
     except Exception as e:
         print(f"An error occurred: {e}")
