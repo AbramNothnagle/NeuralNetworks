@@ -20,9 +20,9 @@ num_variables = 5
 epochs = 100
 final_num_features = 30
 start = 1
-fn_hash = '4274b9a2'
+fn_hash = '5d735a1c'
 # Load the dataset
-data = pd.read_csv('DataGenerators\\logi_fn_dataset_5_10000_lopn_4274b9a2.csv')
+data = pd.read_csv('DataGenerators\\logi_fn_dataset_5_1000_lopn_5d735a1c.csv')
 
 # Extract features and labels
 labels = []
