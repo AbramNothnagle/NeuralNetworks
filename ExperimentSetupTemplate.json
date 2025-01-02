@@ -7,6 +7,8 @@
 		"output_size": "TODO: Enter the number of outputs the model should have.",
 		"Epochs": "TODO: Enter the number of Epochs to run the training loop for. Some experiments may not use this variable.",
 		"fn_hash": "TODO: Enter the hash of the function you want to use.",
-		"FileName": "TODO: Enter the filename of the .csv file that contains the data, do not include the .csv part."
+		"FileName": "TODO: Enter the filename of the .csv file that contains the data, do not include the .csv part.",
+		"Start": "TODO: if you use a start value for some parameter in the test, store it here.",
+		"Stop": "TODO: if you use a stop value for some parameter in the test, store it here."
 	}
 }
