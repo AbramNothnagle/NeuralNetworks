@@ -20,7 +20,7 @@ data = pd.read_csv('DataGenerators\\basicLogicSample.csv')
 
 # Extract features and labels
 X = data[['x1', 'x2', 'x3']].values
-y = data['y'].values
+y = data['y1'].values
 
 # Split the dataset into training and testing sets
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
