@@ -64,9 +64,9 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_
 
 # Convert data to PyTorch tensors
 X_train = torch.tensor(X_train, dtype=torch.float32)
-y_train = torch.tensor(y_train, dtype=torch.float32).unsqueeze(1)
+y_train = torch.tensor(y_train, dtype=torch.float32)
 X_test = torch.tensor(X_test, dtype=torch.float32)
-y_test = torch.tensor(y_test, dtype=torch.float32).unsqueeze(1)
+y_test = torch.tensor(y_test, dtype=torch.float32)
 
 accuracies = []
 for i in range(start, final_num_features):
