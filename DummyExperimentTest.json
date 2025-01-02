@@ -1,0 +1,12 @@
+{
+	"Parameters":{
+		"Test Description": "Dummy test that matches experiment2_NumFeatures5FunctionLogic: testing a 2 layer network by changing the hidden_size with 5 deterministic inputs",
+		"Model": "SimpleNN_2Layer_Classification",
+		"input_size": 5,
+		"hidden_size": "N/A",
+		"output_size": 1,
+		"Epochs": 100,
+		"fn_hash": "5d735a1c",
+		"FileName": "logi_fn_dataset_5_1000_lopn_5d735a1c"
+	}
+}
