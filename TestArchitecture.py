@@ -24,12 +24,14 @@ import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import accuracy_score
+from nnUtilities import train, test
+
 model_as_text = "SimpleNN_2Layer_Classification"
 #from ExperimentalNNs import SimpleNN_2Layer_Classification as MUT #MUT = Model Under Test
 import ExperimentalNNs
 MUT =  getattr(ExperimentalNNs, model_as_text)
 
-from experiment2_NumFeatures5FunctionLogic import train, test
+
 
 # Startup Parameters go here:
 num_variables = 5
@@ -61,8 +63,8 @@ for i in range(start, final_num_features):
     model = MUT(input_size=num_variables,output_size=1,hidden_size=i)
     criterion = nn.BCELoss()  # Binary Cross Entropy Loss for classification
     optimizer = optim.Adam(model.parameters(), lr=0.01)
-    train(epochs, criterion, optimizer, model)
-    accuracies.append(test(model))
+    train(epochs, criterion, optimizer, model, X_train, y_train)
+    accuracies.append(test(model, X_test, y_test))
 
 # Plotting
 plt.figure(figsize=(12, 6))
