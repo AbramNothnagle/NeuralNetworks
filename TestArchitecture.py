@@ -26,28 +26,38 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import accuracy_score
 from nnUtilities import train, test
 
-model_as_text = "SimpleNN_2Layer_Classification"
-#from ExperimentalNNs import SimpleNN_2Layer_Classification as MUT #MUT = Model Under Test
+#TODO: Update this to dynamically get the paramters file name from something like
+#system arguments or another script that calls this script
+#for now hard code it
+#parameterFileName is the JSON file that stores experiment parameters
+parameterFileName = "DummyExperimentTest.json"
+parameters = pd.read_json(parameterFileName)
+
 import ExperimentalNNs
-MUT =  getattr(ExperimentalNNs, model_as_text)
-
-
+MUT =  getattr(ExperimentalNNs, parameters["Parameters"]["Model"])
 
 # Startup Parameters go here:
-num_variables = 5
-epochs = 100
-final_num_features = 30
-start = 1
-fn_hash = '5d735a1c'
+num_variables = parameters["Parameters"]["input_size"]
+num_outputs = parameters["Parameters"]["output_size"]
+epochs = parameters["Parameters"]['Epochs']
+final_num_features = parameters["Parameters"]["Stop"]
+start = parameters["Parameters"]["Start"]
+fn_hash = parameters["Parameters"]['fn_hash']
 # Load the dataset
-data = pd.read_csv('DataGenerators\\logi_fn_dataset_5_1000_lopn_5d735a1c.csv')
+fileName = parameters["Parameters"]["FileName"]
+data = pd.read_csv(f'DataGenerators\\{fileName}.csv')
 
 # Extract features and labels
-labels = []
+# Expect that all variables will be labeled x1, ..., xn (n = num_variables)
+input_labels = []
 for i in range(1,num_variables+1):
-    labels.append(f'x{i}')
-X = data[labels].values
-y = data['y'].values
+    input_labels.append(f'x{i}')
+X = data[input_labels].values
+# Expect that all outputs will be labeled y1, ..., ym (m = num_outputs)
+output_labels = []
+for i in range(1,num_outputs+1):
+    output_labels.append(f'y{i}')
+y = data[output_labels].values
 
 # Split the dataset into training and testing sets
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
