@@ -8,6 +8,7 @@ Created on Sun Dec 29 23:13:04 2024
 import random
 import pandas as pd
 import hashlib
+import traceback
 
 # Logical operators dictionary
 logical_operators = ['and','and not','or','or not','^']
@@ -80,8 +81,9 @@ def encode_function(logical_function):
     encoded = hash_object.hexdigest()[:8]
     return encoded
 
-# Main script
-def main():
+# Deterministic script
+def deterministicGen():
+    print('Generating deterministic data...')
     try:
         n = int(input("Enter the number of variables (n): "))
         samples = int(input("Enter the number of samples: "))
@@ -135,6 +137,97 @@ def main():
         print(encoded_fn)
     except Exception as e:
         print(f"An error occurred: {e}")
+
+# Noisy script
+# Same as deterministic, except it adds some unform noise to the data
+# that gets stored. The output will be calculated deterministically, rather
+# the data that is returned has noise applied after the logic value is calculated
+def noisyGen():
+    print('Generating noisy data...')
+    try:
+        n = int(input("Enter the number of variables (n): "))
+        samples = int(input("Enter the number of samples: "))
+        noise = float(input("Enter the noise to add to the data (<1, normal values ~0.001): "))
+        lopsided = input("Allow lopsided data? [y/n]: ")
+        
+        # If the users doesn't want lopsided data, need to make sure 
+        # that somewhere between 40% and 60% of the data evaluate as True
+        if lopsided == 'n':
+            hits = 0
+            while hits < 0.4*samples or hits > 0.6*samples:
+                # Generate a random logical function
+                random_function, encoded_fn = generate_random_function(n)
+                print(f"Generated Logical Function: {random_function}")
+                
+                # Create dataset
+                dataset = generate_dataset(n, samples, random_function)
+                #print(dataset)
+                if noise > 0.0:
+                    noisy_dataset = [[element + random.uniform(-noise, noise) for element in row] for row in dataset]
+                    '''noisy_dataset = []
+                    for i in range(len(dataset)):
+                        for j in range(len(dataset[i])):
+                            noisy_dataset.append(dataset[i][j] + random.uniform(-noise, noise))
+                    '''
+                # Check the number of True evaluations to determine if lopsided data
+                columns = [f"real_x{i+1}" for i in range(n)] + ["y"]
+                real_df = pd.DataFrame(dataset, columns=columns)
+                noisy_columns = [f"x{i+1}" for i in range(n)] + ["garbage"]
+                noisy_data = pd.DataFrame(noisy_dataset, columns=noisy_columns)
+                df = pd.concat([real_df, noisy_data], axis = 1)
+                # Reorder the columns
+                combined_column_order = [f"real_x{i+1}" for i in range(n)] + [f"x{i+1}" for i in range(n)] + ["y"]
+                df = df[combined_column_order]
+                hits = df['y'].sum()
+                print(hits)
+        else:
+            # Generate a random logical function
+            random_function, encoded_fn = generate_random_function(n)
+            print(f"Generated Logical Function: {random_function}")
+            
+            # Create dataset
+            dataset = generate_dataset(n, samples, random_function)
+            #print(dataset)
+            if noise > 0.0:
+                noisy_dataset = [[element + random.uniform(-noise, noise) for element in row] for row in dataset]
+                '''noisy_dataset = []
+                for i in range(len(dataset)):
+                    for j in range(len(dataset[i])):
+                        noisy_dataset.append(dataset[i][j] + random.uniform(-noise, noise))
+                '''
+            # Store data in dataframe
+            columns = [f"real_x{i+1}" for i in range(n)] + ["y"]
+            real_df = pd.DataFrame(dataset, columns=columns)
+            noisy_columns = [f"x{i+1}" for i in range(n)] + ["garbage"]
+            noisy_data = pd.DataFrame(noisy_dataset, columns=noisy_columns)
+            df = pd.concat([real_df, noisy_data], axis = 1)
+            # Reorder the columns
+            combined_column_order = [f"real_x{i+1}" for i in range(n)] + [f"x{i+1}" for i in range(n)] + ["y"]
+            df = df[combined_column_order]
+        
+        encoded_hash = encode_function(random_function)
+        # Save to CSV
+        # Save to CSV with hash
+        output_file = f"logi_fn_dataset_{n}_{samples}_lop{lopsided}_{encoded_hash}.csv"
+        # Save to CSV with encoded name
+        #output_file = f"logi_fn_dataset_{n}_{samples}_lop{lopsided}_{encoded_fn}.csv"
+        df.to_csv(output_file, index=False)
+        print(f"Dataset saved to {output_file}")
+        
+        # Save the hash to the hash file
+        hashes = pd.read_csv('randomFunctionGenerator_Hashes.csv')
+        new_hash = pd.DataFrame({'Hash':[encoded_hash], 'Function':[random_function]})
+        hashes = pd.concat([hashes, new_hash], ignore_index = True)
+        hashes.to_csv('randomFunctionGenerator_Hashes.csv', index=False)
+        print(encoded_hash)
+        
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        traceback.print_exc()
+
+def main():
+    noisyGen()
+    #deterministicGen()
 
 if __name__ == "__main__":
     main()
