@@ -1,9 +1,12 @@
 {
-	"Model": "TODO: Enter model name here as it shows up on ExperimentalNNs.py",
-	"input_size": "TODO: Enter the number of variables the model would have, e.g. the input size",
-	"hidden_size": "TODO: Enter the hidden size for simple NNs. Some experiments may not use this variable.",
-	"output_size": "TODO: Enter the number of outputs the model should have.",
-	"Epochs": "TODO: Enter the number of Epochs to run the training loop for. Some experiments may not use this variable.",
-	"fn_hash": "TODO: Enter the hash of the function you want to use.",
-	"FileName": "TODO: Enter the filename of the .csv file that contains the data, do not include the .csv part."
+	"Parameters":{
+		"Test Description": "TODO: Enter the description of the test being run here.",
+		"Model": "TODO: Enter model name here as it shows up on ExperimentalNNs.py",
+		"input_size": "TODO: Enter the number of variables the model would have, e.g. the input size",
+		"hidden_size": "TODO: Enter the hidden size for simple NNs. Some experiments may not use this variable.",
+		"output_size": "TODO: Enter the number of outputs the model should have.",
+		"Epochs": "TODO: Enter the number of Epochs to run the training loop for. Some experiments may not use this variable.",
+		"fn_hash": "TODO: Enter the hash of the function you want to use.",
+		"FileName": "TODO: Enter the filename of the .csv file that contains the data, do not include the .csv part."
+	}
 }
