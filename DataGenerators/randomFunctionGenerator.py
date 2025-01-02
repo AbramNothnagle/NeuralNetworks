@@ -103,9 +103,9 @@ def deterministicGen():
                 #print(dataset)
         
                 # Check the number of True evaluations to determine if lopsided data
-                columns = [f"x{i+1}" for i in range(n)] + ["y"]
+                columns = [f"x{i+1}" for i in range(n)] + ["y1"]
                 df = pd.DataFrame(dataset, columns=columns)
-                hits = df['y'].sum()
+                hits = df['y1'].sum()
                 print(hits)
         else:
             # Generate a random logical function
@@ -117,7 +117,7 @@ def deterministicGen():
             #print(dataset)
             
             # Store data in dataframe
-            columns = [f"x{i+1}" for i in range(n)] + ["y"]
+            columns = [f"x{i+1}" for i in range(n)] + ["y1"]
             df = pd.DataFrame(dataset, columns=columns)
         
         encoded_hash = encode_function(random_function)
@@ -167,15 +167,15 @@ def noisyGen():
                     noisy_dataset = [[element + random.uniform(-noise, noise) for element in row] for row in dataset]
 
                 # Check the number of True evaluations to determine if lopsided data
-                columns = [f"real_x{i+1}" for i in range(n)] + ["y"]
+                columns = [f"real_x{i+1}" for i in range(n)] + ["y1"]
                 real_df = pd.DataFrame(dataset, columns=columns)
                 noisy_columns = [f"x{i+1}" for i in range(n)] + ["garbage"]
                 noisy_data = pd.DataFrame(noisy_dataset, columns=noisy_columns)
                 df = pd.concat([real_df, noisy_data], axis = 1)
                 # Reorder the columns
-                combined_column_order = [f"real_x{i+1}" for i in range(n)] + [f"x{i+1}" for i in range(n)] + ["y"]
+                combined_column_order = [f"real_x{i+1}" for i in range(n)] + [f"x{i+1}" for i in range(n)] + ["y1"]
                 df = df[combined_column_order]
-                hits = df['y'].sum()
+                hits = df['y1'].sum()
                 print(hits)
         else:
             # Generate a random logical function
@@ -190,13 +190,13 @@ def noisyGen():
                 noisy_dataset = [[element + random.uniform(-noise, noise) for element in row] for row in dataset]
 
             # Store data in dataframe
-            columns = [f"real_x{i+1}" for i in range(n)] + ["y"]
+            columns = [f"real_x{i+1}" for i in range(n)] + ["y1"]
             real_df = pd.DataFrame(dataset, columns=columns)
             noisy_columns = [f"x{i+1}" for i in range(n)] + ["garbage"]
             noisy_data = pd.DataFrame(noisy_dataset, columns=noisy_columns)
             df = pd.concat([real_df, noisy_data], axis = 1)
             # Reorder the columns
-            combined_column_order = [f"real_x{i+1}" for i in range(n)] + [f"x{i+1}" for i in range(n)] + ["y"]
+            combined_column_order = [f"real_x{i+1}" for i in range(n)] + [f"x{i+1}" for i in range(n)] + ["y1"]
             df = df[combined_column_order]
         
         encoded_hash = encode_function(random_function)
