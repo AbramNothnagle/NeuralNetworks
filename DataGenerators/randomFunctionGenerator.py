@@ -134,7 +134,7 @@ def deterministicGen():
         new_hash = pd.DataFrame({'Hash':[encoded_hash], 'Function':[random_function]})
         hashes = pd.concat([hashes, new_hash], ignore_index = True)
         hashes.to_csv('randomFunctionGenerator_Hashes.csv', index=False)
-        print(encoded_fn)
+        print(encoded_hash)
     except Exception as e:
         print(f"An error occurred: {e}")
 
@@ -161,14 +161,11 @@ def noisyGen():
                 
                 # Create dataset
                 dataset = generate_dataset(n, samples, random_function)
-                #print(dataset)
+                
+                #If noise was applied more than 0, adds uniform noise from -noise to noise
                 if noise > 0.0:
                     noisy_dataset = [[element + random.uniform(-noise, noise) for element in row] for row in dataset]
-                    '''noisy_dataset = []
-                    for i in range(len(dataset)):
-                        for j in range(len(dataset[i])):
-                            noisy_dataset.append(dataset[i][j] + random.uniform(-noise, noise))
-                    '''
+
                 # Check the number of True evaluations to determine if lopsided data
                 columns = [f"real_x{i+1}" for i in range(n)] + ["y"]
                 real_df = pd.DataFrame(dataset, columns=columns)
@@ -187,14 +184,11 @@ def noisyGen():
             
             # Create dataset
             dataset = generate_dataset(n, samples, random_function)
-            #print(dataset)
+            
+            #If noise was applied more than 0, adds uniform noise from -noise to noise
             if noise > 0.0:
                 noisy_dataset = [[element + random.uniform(-noise, noise) for element in row] for row in dataset]
-                '''noisy_dataset = []
-                for i in range(len(dataset)):
-                    for j in range(len(dataset[i])):
-                        noisy_dataset.append(dataset[i][j] + random.uniform(-noise, noise))
-                '''
+
             # Store data in dataframe
             columns = [f"real_x{i+1}" for i in range(n)] + ["y"]
             real_df = pd.DataFrame(dataset, columns=columns)
