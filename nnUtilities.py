@@ -33,7 +33,10 @@ def test(model, X_test, y_test):
     model.eval()
     with torch.no_grad():
         predictions = model(X_test)
+        print(predictions[1:10])
         predictions = (predictions > 0.5).float()
+        print(predictions[1:10])
+        print(y_test[1:10])
         accuracy = accuracy_score(y_test.numpy(), predictions.numpy())
         print(f'Test Accuracy: {accuracy:.4f}')
     
